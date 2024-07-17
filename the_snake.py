@@ -165,9 +165,7 @@ def handle_keys(game_object):
 
 def main():
     """Функция main"""
-    # Инициализация PyGame:
     pygame.init()
-    # Тут нужно создать экземпляры классов.
     apple = Apple()
     snake = Snake()
 
