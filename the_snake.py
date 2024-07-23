@@ -60,13 +60,13 @@ class Apple(GameObject):
     def __init__(self):
         super().__init__()
         self.snake_positions = Snake().positions
-        self.position = self.randomise_position(Snake().positions)
+        self.position = self.randomize_position(Snake().positions)
 
     def draw(self):
         """Определение метода отрисовки на поле."""
         self.paint_square(position=self.position)
 
-    def randomise_position(self, position):
+    def randomize_position(self, position):
         """
         Метод рандомизации позиции объекта класса на
         поле с учётом занятых клеток.
@@ -168,7 +168,7 @@ def main():
         snake.move()
         if snake.get_head_position() == apple.position:
             snake.length += 5
-            apple.randomise_position(snake.positions)
+            apple.randomize_position(snake.positions)
         if snake.get_head_position() in snake.snake_body():
             snake.reset()
         screen.fill(BOARD_BACKGROUND_COLOR)
