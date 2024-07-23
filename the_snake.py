@@ -143,7 +143,7 @@ def handle_keys(game_object):
 
 def randomise_position(game_object, positions):
     """
-    Метод определяет рандомную новую и тсартовую 
+    Метод определяет рандомную новую и тсартовую
     позицию яблока с учётом занятых клеток
     """
     progress = True
