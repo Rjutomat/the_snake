@@ -60,20 +60,11 @@ class Apple(GameObject):
     def __init__(self):
         super().__init__()
         self.snake_positions = Snake().positions
-        self.position = self.randomize_position()
+        self.position = randomise_position(self, Snake().positions)
 
     def draw(self):
         """Определение метода отрисовки на поле."""
         self.paint_square(position=self.position)
-
-    def randomize_position(self):
-        """Метод рандомизации позиции объекта на поле."""
-        progress = True
-        while progress:
-            self.position = (randrange(0, SCREEN_WIDTH, GRID_SIZE),
-                             randrange(0, SCREEN_HEIGHT, GRID_SIZE))
-            if self.position not in self.snake_positions:
-                return self.position
 
 
 class Snake(GameObject):
@@ -150,6 +141,22 @@ def handle_keys(game_object):
             game_object.update_direction(event.key)
 
 
+def randomise_position(game_object, positions):
+    """
+    Метод определяет рандомную новую и тсартовую 
+    позицию яблока с учётом занятых клеток
+    """
+    progress = True
+    while progress:
+        game_object.position = (randrange(0, SCREEN_WIDTH, GRID_SIZE),
+                                randrange(0, SCREEN_HEIGHT, GRID_SIZE))
+        if game_object.position not in positions:
+            progress = False
+            return game_object.position
+        else:
+            continue
+
+
 def main():
     """Функция main"""
     pg.init()
@@ -162,7 +169,7 @@ def main():
         snake.move()
         if snake.get_head_position() == apple.position:
             snake.length += 5
-            apple.randomize_position()
+            randomise_position(apple, snake.positions)
         if snake.get_head_position() in snake.snake_body():
             snake.reset()
         screen.fill(BOARD_BACKGROUND_COLOR)
