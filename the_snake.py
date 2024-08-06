@@ -50,10 +50,10 @@ class GameObject:
     """Определение родительских атрибутов классов."""
 
     def __init__(self,
-                 positions=[MIDDLE_OF_SCREEN],
+                 position=MIDDLE_OF_SCREEN,
                  body_color=APPLE_COLOR) -> None:
         """Определение материнский свойств классов."""
-        self.positions = positions
+        self.position = position
         self.body_color = body_color
 
     def paint_square(self, position, color, border_color=BORDER_COLOR):
@@ -143,6 +143,7 @@ class Snake(GameObject):
         self.length = 1
         self.direction = choice([UP, LEFT, RIGHT, DOWN])
         self.last_segment = None
+        self.positions = [self.position]
 
 
 def handle_keys(game_object):
