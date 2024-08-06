@@ -132,7 +132,7 @@ class Snake(GameObject):
                 self.last_segment,
                 BOARD_BACKGROUND_COLOR,
                 border_color=BOARD_BACKGROUND_COLOR
-                )
+            )
 
     def get_head_position(self):
         """Метод определения координат первого элемента."""
