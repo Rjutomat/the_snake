@@ -113,7 +113,7 @@ class Snake(GameObject):
             head_position[0]
             + self.direction[0]
             * GRID_SIZE
-            )
+                             )
             % SCREEN_WIDTH,
             (
             head_position[1]
@@ -121,7 +121,7 @@ class Snake(GameObject):
             * GRID_SIZE
             )
             % SCREEN_HEIGHT
-            )
+                            )
         self.positions.insert(0, new_head_position)
         if len(self.positions) > self.length:
             self.last_segment = self.positions.pop()
