@@ -50,9 +50,11 @@ clock = pg.time.Clock()
 class GameObject:
     """Определение родительских атрибутов классов."""
 
-    def __init__(self,
-                 position=MIDDLE_OF_SCREEN,
-                 body_color=MISSING_COLOR) -> None:
+    def __init__(
+            self,
+            position=MIDDLE_OF_SCREEN,
+            body_color=MISSING_COLOR
+            ) -> None:
         """Определение материнский свойств классов."""
         self.position = position
         self.body_color = body_color
@@ -75,9 +77,9 @@ class Apple(GameObject):
 
     def __init__(self, snake_positions=None):
         """Определение свойств объекта дочернего класса 'Apple'."""
-        if not snake_positions:
-            snake_positions = self.position
         super().__init__(body_color=APPLE_COLOR)
+        if not snake_positions:
+            snake_positions = [self.position]
         self.randomize_position(snake_positions)
 
     def draw(self):
@@ -87,8 +89,18 @@ class Apple(GameObject):
     def randomize_position(self, snake_positions):
         """Метод рандомизации позиции объекта класса."""
         while True:
-            self.position = (randrange(0, SCREEN_WIDTH, GRID_SIZE),
-                             randrange(0, SCREEN_HEIGHT, GRID_SIZE))
+            self.position = (
+                randrange(
+                    0,
+                    SCREEN_WIDTH,
+                    GRID_SIZE
+                ),
+                randrange(
+                    0,
+                    SCREEN_HEIGHT,
+                    GRID_SIZE
+                )
+            )
             if self.position not in snake_positions:
                 self.position = self.position
                 break
