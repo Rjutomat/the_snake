@@ -21,6 +21,7 @@ BOARD_BACKGROUND_COLOR = (0, 0, 0)
 BORDER_COLOR = (93, 216, 228)
 APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
+MISSING_COLOR=(229, 235, 52)
 
 # Константа изменения направления:
 DIRECTIONS = {
@@ -51,13 +52,15 @@ class GameObject:
 
     def __init__(self,
                  position=MIDDLE_OF_SCREEN,
-                 body_color=APPLE_COLOR) -> None:
+                 body_color=MISSING_COLOR) -> None:
         """Определение материнский свойств классов."""
         self.position = position
         self.body_color = body_color
 
-    def paint_square(self, position, color, border_color=BORDER_COLOR):
+    def paint_square(self, position, color=None, border_color=BORDER_COLOR):
         """Метод отрисовки одного квадрата объекта."""
+        if not color:
+            color = self.body_color
         rect = pg.Rect(position, (GRID_SIZE, GRID_SIZE))
         pg.draw.rect(screen, color, rect)
         pg.draw.rect(screen, border_color, rect, 1)
@@ -70,9 +73,11 @@ class GameObject:
 class Apple(GameObject):
     """Определение дочернего от GameObject класса."""
 
-    def __init__(self, snake_positions=[MIDDLE_OF_SCREEN]):
+    def __init__(self, snake_positions=None):
         """Определение свойств объекта дочернего класса 'Apple'."""
-        super().__init__()
+        if not snake_positions:
+            snake_positions = self.position
+        super().__init__(body_color=APPLE_COLOR)
         self.randomize_position(snake_positions)
 
     def draw(self):
@@ -80,15 +85,13 @@ class Apple(GameObject):
         self.paint_square(self.position, self.body_color)
 
     def randomize_position(self, snake_positions):
-        """
-        Метод рандомизации позиции объекта класса на поле с учётом.
-
-        занятых клеток.
-        """
-        self.position = (randrange(0, SCREEN_WIDTH, GRID_SIZE),
-                         randrange(0, SCREEN_HEIGHT, GRID_SIZE))
-        if self.position not in snake_positions:
-            self.position = self.position
+        """Метод рандомизации позиции объекта класса."""
+        while True:
+            self.position = (randrange(0, SCREEN_WIDTH, GRID_SIZE),
+                             randrange(0, SCREEN_HEIGHT, GRID_SIZE))
+            if self.position not in snake_positions:
+                self.position = self.position
+                break
 
 
 class Snake(GameObject):
@@ -96,8 +99,7 @@ class Snake(GameObject):
 
     def __init__(self):
         """Определение свойств объекта дочернего класса 'Snake'."""
-        super().__init__()
-        self.body_color = SNAKE_COLOR
+        super().__init__(body_color=SNAKE_COLOR)
         self.reset()
 
     def update_direction(self, direction):
@@ -107,14 +109,21 @@ class Snake(GameObject):
     def move(self):
         """Метод движения и изменения движения объекта класса."""
         head_position = self.get_head_position()
-        new_head_position = ((head_position[0] + self.direction[0] * GRID_SIZE)
+        new_head_position = ((
+                              head_position[0]
+                              + self.direction[0]
+                              * GRID_SIZE)
                              % SCREEN_WIDTH,
-                             (head_position[1] + self.direction[1] * GRID_SIZE)
-                             % SCREEN_HEIGHT)
+                             (head_position[1]
+                              + self.direction[1]
+                              * GRID_SIZE)
+                             % SCREEN_HEIGHT
+                             )
         self.positions.insert(0, new_head_position)
-        self.last_segment = self.positions[-1]
         if len(self.positions) > self.length:
-            self.positions.remove(self.last_segment)
+            self.last_segment = self.positions.pop()
+        else:
+            self.last_segment = None
 
     def snake_body(self):
         """
@@ -153,12 +162,11 @@ def handle_keys(game_object):
             pg.quit()
             raise SystemExit
         if event.type == pg.KEYDOWN:
-            game_object.new_direction = DIRECTIONS.get((
+            game_object.update_direction(DIRECTIONS.get((
                                                        game_object.direction,
                                                        event.key),
                                                        game_object.direction
-                                                       )
-            game_object.update_direction(game_object.new_direction)
+                                                       ))
 
 
 def main():
