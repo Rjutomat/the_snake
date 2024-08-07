@@ -110,18 +110,18 @@ class Snake(GameObject):
         """Метод движения и изменения движения объекта класса."""
         head_position = self.get_head_position()
         new_head_position = ((
-                              head_position[0]
-                              + self.direction[0]
-                              * GRID_SIZE
-                            )
-                             % SCREEN_WIDTH,
-                             (
-                              head_position[1]
-                              + self.direction[1]
-                              * GRID_SIZE
-                            )
-                             % SCREEN_HEIGHT
-                            )
+            head_position[0]
+            + self.direction[0]
+            * GRID_SIZE
+            )
+            % SCREEN_WIDTH,
+            (
+            head_position[1]
+            + self.direction[1]
+            * GRID_SIZE
+            )
+            % SCREEN_HEIGHT
+            )
         self.positions.insert(0, new_head_position)
         if len(self.positions) > self.length:
             self.last_segment = self.positions.pop()
