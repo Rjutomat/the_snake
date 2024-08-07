@@ -54,7 +54,7 @@ class GameObject:
             self,
             position=MIDDLE_OF_SCREEN,
             body_color=MISSING_COLOR
-            ) -> None:
+    ) -> None:
         """Определение материнский свойств классов."""
         self.position = position
         self.body_color = body_color
