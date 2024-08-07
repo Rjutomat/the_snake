@@ -145,7 +145,7 @@ class Snake(GameObject):
                 self.last_segment,
                 BOARD_BACKGROUND_COLOR,
                 border_color=BOARD_BACKGROUND_COLOR
-                )
+                             )
 
     def get_head_position(self):
         """Метод определения координат первого элемента."""
@@ -166,12 +166,14 @@ def handle_keys(game_object):
             pg.quit()
             raise SystemExit
         if event.type == pg.KEYDOWN:
-            game_object.update_direction(DIRECTIONS.get((
-                                                         game_object.direction,
-                                                         event.key
-                                                         ),
-                                                        game_object.direction
-                                                        ))
+            game_object.update_direction(
+                DIRECTIONS.get(
+                   (
+                        game_object.direction,
+                        event.key
+                   ), game_object.direction
+                              )
+                                        )
 
 
 def main():
