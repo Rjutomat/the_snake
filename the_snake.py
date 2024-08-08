@@ -1,4 +1,3 @@
-"""Импорт необходимых функций модуля 'random'."""
 from random import choice, randrange
 
 import pygame as pg
@@ -21,7 +20,7 @@ BOARD_BACKGROUND_COLOR = (0, 0, 0)
 BORDER_COLOR = (93, 216, 228)
 APPLE_COLOR = (255, 0, 0)
 SNAKE_COLOR = (0, 255, 0)
-MISSING_COLOR = (229, 235, 52)
+MISSING_COLOR = (250, 2, 188)
 
 # Константа изменения направления:
 DIRECTIONS = {
@@ -88,7 +87,7 @@ class Apple(GameObject):
 
     def randomize_position(self, snake_positions):
         """Метод рандомизации позиции объекта класса."""
-        while True:
+        while self.position in snake_positions:
             self.position = (
                 randrange(
                     0,
@@ -101,9 +100,6 @@ class Apple(GameObject):
                     GRID_SIZE
                 )
             )
-            if self.position not in snake_positions:
-                self.position = self.position
-                break
 
 
 class Snake(GameObject):
